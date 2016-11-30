@@ -30,5 +30,12 @@ E:\RabbitMQPortable>
 * Run RabbitMQPortable.exe. If everything is fine it should locate erlang and rabbit and run it
 
 
+##How to manage and/or configure portable RabbitMQ server ?
 
+Usually those job are done using rabbitmqctl.bat from sbin directory but if you start it directly it will nag that can't find (portable) Erlang. 
+So to get this task done use 'Start console' command from application main menu and use rabbitmqctl.bat from console window that will be opened.
 
+##Where to put rabbitmq.config file ? 
+
+Application keep all data into 'data' directory. If this directory don't exist it will be automaticaly created when you start application first time.  
+Put rabbitmq.config to data directory and server should find it.
