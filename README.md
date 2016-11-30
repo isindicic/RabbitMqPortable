@@ -1,14 +1,14 @@
 # RabbitMQ portable
 
-Launch [RabbitMQ](https://www.rabbitmq.com/) server without need to install it and/or from USB.
+Launch [RabbitMQ](https://www.rabbitmq.com/) server for Windows without need to install it from USB.
 
 To successfully compile solution you'll need Visual Studio 2005 or compatible. Solution targets .NET 2.0 and application require such framework version installed in order to run.
 
 ##How to prepare portable RabbitMQ
 
-1. Copy RabbitMQPortable.exe to some directory on USB stick or hard drive (let's call it RMQP directory)
-2. Download [RabbitMQ zip](https://www.rabbitmq.com/install-windows-manual.html) and unpack it in RMQP directory.
-3. Get Erlang directory and copy it to RMQP directory. Unfortunately there are no zip distribution, so you should install it somewhere, get files and unistall it or take it from your friend computer :) . At the end you should see something like this:
+* Copy RabbitMQPortable.exe to some directory on USB stick or hard drive (let's call it RMQP directory)
+* Download [RabbitMQ zip](https://www.rabbitmq.com/install-windows-manual.html) and unpack it in RMQP directory.
+* Get Erlang directory and copy it to RMQP directory. Unfortunately there are no zip distribution, so you should install it somewhere, get files and unistall it or take it from your friend computer :) . At the end you should see something like this:
 ```
 E:\RabbitMQPortable>dir
  Volume in drive E is SINDA_HD
@@ -27,7 +27,7 @@ E:\RabbitMQPortable>dir
 E:\RabbitMQPortable>
 ```
 
-4. Run RabbitMQPortable.exe. If everything is fine it should locate erlang and rabbit and run it
+* Run RabbitMQPortable.exe. If everything is fine it should locate erlang and rabbit and run it
 
 
 
