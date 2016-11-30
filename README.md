@@ -1,6 +1,6 @@
 # RabbitMQ portable
 
-Launch [RabbitMQ](https://www.rabbitmq.com/) server without need to install it and/or from USB.
+Launch [RabbitMQ](https://www.rabbitmq.com/) server for Windows without need to install it from USB.
 
 To successfully compile solution you'll need Visual Studio 2005 or compatible. Solution targets .NET 2.0 and application require such framework version installed in order to run.
 
