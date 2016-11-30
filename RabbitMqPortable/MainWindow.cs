@@ -57,32 +57,82 @@ namespace SindaSoft.RabbitMqPortable
                 }
             }
 
+            if (String.IsNullOrEmpty(erlangDirectory))
+            { 
+                MessageBox.Show("Cant find erlang directory", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Close();
+                return;
+            }
+            else if (String.IsNullOrEmpty(ertsDirectory))
+            { 
+                MessageBox.Show("Cant find erts directory inside erlang directory. Look like you have invalid or uncomplete erlang directory", 
+                                this.Text, 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Stop);
+                Close();
+                return;
+            }
+            else if(String.IsNullOrEmpty(rmqDirectory))
+            {
+                MessageBox.Show("Cant find rabbitmq directory.", 
+                                this.Text, 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Stop);
+                Close();
+                return;
+            }
+
             //*********************************************************************************
             //  OK.. Now update erl.ini with actual paths
             string iniFile = Path.Combine(erlangDirectory, "bin\\erl.ini");
-            string iniContent = "[erlang]\nBindir={0}\nProgname=erl\nRootdir={1}\n";
+            try
+            {
+                string iniContent = "[erlang]\nBindir={0}\nProgname=erl\nRootdir={1}\n";
 
-            string nc = String.Format(iniContent, ertsDirectory.Replace(@"\", @"\\"),
-                                                  erlangDirectory.Replace(@"\", @"\\"));
+                string nc = String.Format(iniContent, ertsDirectory.Replace(@"\", @"\\"),
+                                                      erlangDirectory.Replace(@"\", @"\\"));
 
-            File.WriteAllText(iniFile, nc);
+                File.WriteAllText(iniFile, nc);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating " + iniFile + "\n\n" + ex.Message,
+                                this.Text,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Stop);
+                Close();
+                return;
+            }
+
 
             //*********************************************************************************
             //  OK.. Now prepare process with envirovment vars that run RabbitMQ server 
             //  and kick it
-            process = new Process();
-            process.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
-            process.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
-            process.ErrorDataReceived += new DataReceivedEventHandler(process_ErrorDataReceived);
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/c \"" + Path.Combine(rmqDirectory, @"sbin\rabbitmq-server.bat") + "\"";
-            process.Start();
-            process.BeginOutputReadLine();
+            try
+            {
+                process = new Process();
+                process.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
+                process.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
+                process.ErrorDataReceived += new DataReceivedEventHandler(process_ErrorDataReceived);
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = "/c \"" + Path.Combine(rmqDirectory, @"sbin\rabbitmq-server.bat") + "\"";
+                process.Start();
+                process.BeginOutputReadLine();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error starting server\n\n" + ex.Message,
+                                this.Text,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Stop);
+                Close();
+                return;
+            }
         }
 
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -123,7 +173,7 @@ namespace SindaSoft.RabbitMqPortable
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!process.HasExited)
+            if (process != null && !process.HasExited)
             {
                 //process.CloseMainWindow();
                 process.Kill();
