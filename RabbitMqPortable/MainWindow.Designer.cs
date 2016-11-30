@@ -33,7 +33,11 @@ namespace SindaSoft.RabbitMqPortable
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsRabbitMQ = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsErlang = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.rabbitMQToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -73,20 +77,50 @@ namespace SindaSoft.RabbitMqPortable
             this.tsErlang.Size = new System.Drawing.Size(131, 20);
             this.tsErlang.Text = "Erlang version: n/a";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rabbitMQToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.menuStrip1.Size = new System.Drawing.Size(1138, 28);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // rabbitMQToolStripMenuItem
+            // 
+            this.rabbitMQToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startConsoleToolStripMenuItem});
+            this.rabbitMQToolStripMenuItem.Name = "rabbitMQToolStripMenuItem";
+            this.rabbitMQToolStripMenuItem.Size = new System.Drawing.Size(89, 24);
+            this.rabbitMQToolStripMenuItem.Text = "RabbitMQ";
+            // 
+            // startConsoleToolStripMenuItem
+            // 
+            this.startConsoleToolStripMenuItem.Name = "startConsoleToolStripMenuItem";
+            this.startConsoleToolStripMenuItem.Size = new System.Drawing.Size(166, 24);
+            this.startConsoleToolStripMenuItem.Text = "Start Console";
+            this.startConsoleToolStripMenuItem.Click += new System.EventHandler(this.startConsoleToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1138, 444);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.richTextBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
             this.Text = "RabbitMQ server portable";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,6 +132,9 @@ namespace SindaSoft.RabbitMqPortable
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsRabbitMQ;
         private System.Windows.Forms.ToolStripStatusLabel tsErlang;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem rabbitMQToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startConsoleToolStripMenuItem;
 
     }
 }

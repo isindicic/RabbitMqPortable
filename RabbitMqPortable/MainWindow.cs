@@ -131,5 +131,16 @@ namespace SindaSoft.RabbitMqPortable
                     p.Kill();
             }
         }
+
+        private void startConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process console = new Process();
+            console.StartInfo.UseShellExecute = false;
+            console.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
+            console.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
+            console.StartInfo.FileName = "cmd.exe";
+            console.StartInfo.WorkingDirectory = Path.Combine(this.rmqDirectory, "sbin");
+            console.Start();
+        }
     }
 }
