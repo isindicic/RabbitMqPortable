@@ -177,8 +177,23 @@ namespace SindaSoft.RabbitMqPortable
             {
                 //process.CloseMainWindow();
                 process.Kill();
-                foreach (Process p in Process.GetProcessesByName("erl"))
-                    p.Kill();
+
+                Process[] allProcesses = Process.GetProcesses();
+                foreach (Process p in allProcesses)
+                {
+                    try
+                    {
+                        string fullPath = p.MainModule.FileName;
+                        if (fullPath != null && fullPath.StartsWith(erlangDirectory))
+                        {
+                            System.Diagnostics.Debug.WriteLine("Force to kill : " + fullPath);
+                            p.Kill();
+                        }
+                    }
+                    catch (Exception ex)
+                    { 
+                    }
+                }
             }
         }
 
