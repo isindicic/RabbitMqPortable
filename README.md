@@ -36,9 +36,8 @@ E:\RabbitMQPortable>
 
 ##How to manage and/or configure portable RabbitMQ server ?
 
-Usually those job are done using rabbitmqctl.bat or rabbitmq-plugins.bat from sbin directory but if you start it directly it will nag that can't find (portable) Erlang. 
-So to get this task done use 'Start console' command from application main menu and use previously mentioned bat files from console window that will be opened.
+Usually those job are done using `rabbitmqctl.bat` or `rabbitmq-plugins.bat` from sbin directory but if you start it directly it will nag that can't find (portable) Erlang. So to get this task done use 'Start console' command from application main menu and use previously mentioned bat files from console window that will be opened.
 
-##Where to put rabbitmq.config file ? 
+##Where to put `rabbitmq.config` file ? 
 
-Application keep all data into 'data' directory. If this directory don't exist it will be automaticaly created when you start application first time. Put rabbitmq.config to data directory and server should find it.
+Application keep all data into 'data' directory. If this directory don't exist it will be automaticaly created when you start application first time. Put `rabbitmq.config` to data directory and server should find it.
