@@ -12,7 +12,7 @@ To successfully compile solution you'll need Visual Studio 2005 or compatible. S
 
 * Copy RabbitMQPortable.exe to some directory on USB stick or hard drive (let's call it RMQP directory)
 * Download RabbitMQ zip from this [page](https://www.rabbitmq.com/install-windows-manual.html) and unpack it in RMQP directory.
-* Get Erlang directory and copy it to RMQP directory. Unfortunately there are no zip distribution, so you should install it somewhere, get files and unistall it or take it from your friend computer :) . At the end you should see something like this:
+* Get [Erlang](https://www.erlang.org/)  directory and copy it to RMQP directory. Unfortunately there are no zip distribution, so you should install it somewhere, get files and unistall it or take it from your friend computer :) . At the end you should see something like this:
 ```
 E:\RabbitMQPortable>dir
  Volume in drive E is SINDA_HD
