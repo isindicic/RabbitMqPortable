@@ -14,6 +14,8 @@ namespace SindaSoft.RabbitMqPortable
     public partial class MainWindow : Form
     {
         private string homeDirectory = null;
+        private string sysHomeDrive = null;
+        private string sysHomeDirectory = null;
         private string erlangDirectory = null;
         private string ertsDirectory = null;
         private string rmqDirectory = null;
@@ -26,6 +28,8 @@ namespace SindaSoft.RabbitMqPortable
             // Find a location of RabbitMqPortable.exe
             UriBuilder uri = new UriBuilder(Assembly.GetExecutingAssembly().CodeBase);
             homeDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            sysHomeDrive = homeDirectory[1] == ':' ? homeDirectory.Substring(0, 2) : "C:";
+            sysHomeDirectory = homeDirectory[1] == ':' ? homeDirectory.Substring(2) + @"\data\" : "\\";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -113,6 +117,8 @@ namespace SindaSoft.RabbitMqPortable
                 process = new Process();
                 process.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
                 process.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
+                process.StartInfo.EnvironmentVariables["HOMEDRIVE"] = sysHomeDrive;     // Erlang need this for cookie file
+                process.StartInfo.EnvironmentVariables["HOMEPATH"] = sysHomeDirectory;  // Erlang need this for cookie file
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -133,6 +139,16 @@ namespace SindaSoft.RabbitMqPortable
                 Close();
                 return;
             }
+
+            //***************************************************************************
+            // Prepare shell for console ... 
+            string bat_start = "@set ERLANG_HOME=" + erlangDirectory + "\\\n";
+            bat_start += "@set RABBITMQ_BASE=" + homeDirectory + "\\data\\\n";
+            bat_start += "@set HOMEDRIVE=" + sysHomeDrive + "\n";
+            bat_start += "@set HOMEPATH=" + sysHomeDirectory + "\n";
+            bat_start += "@cmd.exe";
+            File.WriteAllText(Path.Combine(rmqDirectory, @"sbin\startShell.bat"), bat_start);
+            
         }
 
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -201,9 +217,7 @@ namespace SindaSoft.RabbitMqPortable
         {
             Process console = new Process();
             console.StartInfo.UseShellExecute = false;
-            console.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
-            console.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
-            console.StartInfo.FileName = "cmd.exe";
+            console.StartInfo.FileName = Path.Combine(rmqDirectory, @"sbin\startShell.bat");
             console.StartInfo.WorkingDirectory = Path.Combine(this.rmqDirectory, "sbin");
             console.Start();
         }
