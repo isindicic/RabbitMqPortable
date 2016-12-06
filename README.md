@@ -6,9 +6,11 @@ To successfully compile solution you'll need Visual Studio 2005 or compatible. S
 
 ##How to quickly start to use portable RabbitMQ ?
 
-* Download [latest release](https://github.com/isindicic/RabbitMqPortable/releases/download/1.0/RabbitMqPortable.zip) and unpack it somewhere. Start RabbitMqPortable.exe and wait for server to start up. To terminate server simply close window.
+* Download [latest release](https://github.com/isindicic/RabbitMqPortable/releases/download/1.0/RabbitMqPortable.zip) and unpack it somewhere. This zip file already contain RabbitMq server and 32-bit Erlang, so this is all you need and could be started on almost every machine. Start RabbitMqPortable.exe and wait for server to start up. To terminate server simply close window.
 
 ##How to prepare portable RabbitMQ from scratch ?
+
+If you are not satisifed with version of Erlang and/or RabbitMq server that come in [latest release](https://github.com/isindicic/RabbitMqPortable/releases/download/1.0/RabbitMqPortable.zip) you can simple build your own portable package following those instructions:
 
 * Copy RabbitMQPortable.exe to some directory on USB stick or hard drive (let's call it RMQP directory)
 * Download RabbitMQ zip from this [page](https://www.rabbitmq.com/install-windows-manual.html) and unpack it in RMQP directory.
@@ -32,7 +34,6 @@ E:\RabbitMQPortable>
 ```
 
 * Run RabbitMQPortable.exe. If everything is fine it should locate erlang and rabbit and run it
-
 
 ##How to manage and/or configure portable RabbitMQ server ?
 
