@@ -21,6 +21,9 @@ namespace SindaSoft.RabbitMqPortable
         private string rmqDirectory = null;
         private Process process = null;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +35,11 @@ namespace SindaSoft.RabbitMqPortable
             sysHomeDirectory = homeDirectory[1] == ':' ? homeDirectory.Substring(2) + @"\data\" : "\\";
         }
 
+        /// <summary>
+        /// On form load ... 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             //********************************************************************
@@ -151,6 +159,12 @@ namespace SindaSoft.RabbitMqPortable
             
         }
 
+        /// <summary>
+        /// Capture main process stderr output
+        /// and display it on main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(e.Data);
@@ -169,6 +183,12 @@ namespace SindaSoft.RabbitMqPortable
             }
         }
         
+        /// <summary>
+        /// Capture main process stdout output
+        /// and display it on main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(e.Data);
@@ -187,13 +207,18 @@ namespace SindaSoft.RabbitMqPortable
             }
         }
 
+        /// <summary>
+        /// On form closing...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (process != null && !process.HasExited)
             {
-                //process.CloseMainWindow();
-                process.Kill();
+                process.Kill(); // Kill main process
 
+                // OK.. Now check if Erlang leave something behind .. ?!
                 Process[] allProcesses = Process.GetProcesses();
                 foreach (Process p in allProcesses)
                 {
@@ -213,6 +238,11 @@ namespace SindaSoft.RabbitMqPortable
             }
         }
 
+        /// <summary>
+        /// On 'Start console' menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startConsoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process console = new Process();
