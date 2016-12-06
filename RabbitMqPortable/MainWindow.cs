@@ -37,6 +37,8 @@ namespace SindaSoft.RabbitMqPortable
 
         /// <summary>
         /// On form load ... 
+        /// Prepare all settings and variables for succesfull 
+        /// server start (and stop) and check if everything is fine
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -69,6 +71,8 @@ namespace SindaSoft.RabbitMqPortable
                 }
             }
 
+            //********************************************************************
+            // OK.. Now let's check if we find everything we need .... 
             if (String.IsNullOrEmpty(erlangDirectory))
             { 
                 MessageBox.Show("Cant find erlang directory", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -116,7 +120,122 @@ namespace SindaSoft.RabbitMqPortable
                 return;
             }
 
+            //***************************************************************************
+            // Prepare bat file for 'start console' ... 
+            string bat_start = "@set ERLANG_HOME=" + erlangDirectory + "\\\n";
+            bat_start += "@set RABBITMQ_BASE=" + homeDirectory + "\\data\\\n";
+            bat_start += "@set HOMEDRIVE=" + sysHomeDrive + "\n";
+            bat_start += "@set HOMEPATH=" + sysHomeDirectory + "\n";
+            bat_start += "@cmd.exe";
+            File.WriteAllText(Path.Combine(rmqDirectory, @"sbin\startShell.bat"), bat_start);
+            
+            WriteLineToOutput("", Color.White); // Add one empty line....
 
+            if (!StartServer())     // And finnaly try to start server ...
+            {
+                Close();
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Capture main process stderr output
+        /// and display it on main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            try
+            {
+                if (e.Data != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Data);
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        WriteLineToOutput(e.Data, Color.Red);
+                    }));
+                }
+            }
+            catch (Exception ex)
+            { 
+            }
+        }
+        
+        /// <summary>
+        /// Capture main process stdout output
+        /// and display it on main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            try
+            {
+                if (e.Data != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Data);
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        WriteLineToOutput(e.Data, Color.LimeGreen);
+                    }));
+                }
+            }
+            catch (Exception ex)
+            { 
+            }
+        }
+
+        /// <summary>
+        /// On form closing...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            StopServer();
+        }
+
+        /// <summary>
+        /// On 'Start console' menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void startConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process console = new Process();
+            console.StartInfo.UseShellExecute = false;
+            console.StartInfo.FileName = Path.Combine(rmqDirectory, @"sbin\startShell.bat");
+            console.StartInfo.WorkingDirectory = Path.Combine(this.rmqDirectory, "sbin");
+            console.Start();
+        }
+
+        /// <summary>
+        /// On 'Start server' menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void startServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StartServer();
+        }
+
+        /// <summary>
+        /// On 'Stop console' menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void stopServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StopServer();
+        }
+
+        /// <summary>
+        /// Start RabbitMQ server in portable mode
+        /// </summary>
+        /// <returns>True if succesfull</returns>
+        private bool StartServer()
+        {
             //*********************************************************************************
             //  OK.. Now prepare process with envirovment vars that run RabbitMQ server 
             //  and kick it
@@ -135,8 +254,16 @@ namespace SindaSoft.RabbitMqPortable
                 process.ErrorDataReceived += new DataReceivedEventHandler(process_ErrorDataReceived);
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c \"" + Path.Combine(rmqDirectory, @"sbin\rabbitmq-server.bat") + "\"";
+
+                WriteLineToOutput(" Server started ... ", Color.White);
+
                 process.Start();
                 process.BeginOutputReadLine();
+
+                startServerToolStripMenuItem.Enabled = false;
+                stopServerToolStripMenuItem.Enabled = true;
+                
+                return true;
             }
             catch (Exception ex)
             {
@@ -144,112 +271,71 @@ namespace SindaSoft.RabbitMqPortable
                                 this.Text,
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Stop);
-                Close();
-                return;
+                return false;
             }
 
-            //***************************************************************************
-            // Prepare shell for console ... 
-            string bat_start = "@set ERLANG_HOME=" + erlangDirectory + "\\\n";
-            bat_start += "@set RABBITMQ_BASE=" + homeDirectory + "\\data\\\n";
-            bat_start += "@set HOMEDRIVE=" + sysHomeDrive + "\n";
-            bat_start += "@set HOMEPATH=" + sysHomeDirectory + "\n";
-            bat_start += "@cmd.exe";
-            File.WriteAllText(Path.Combine(rmqDirectory, @"sbin\startShell.bat"), bat_start);
-            
         }
 
         /// <summary>
-        /// Capture main process stderr output
-        /// and display it on main window
+        /// Stop RabbitMQ server
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        /// <returns>True if succesfull</returns>
+        private bool StopServer()
         {
-            System.Diagnostics.Debug.WriteLine(e.Data);
             try
             {
-                this.Invoke(new MethodInvoker(delegate
+                if (process != null && !process.HasExited)
                 {
-                    richTextBox1.SelectionColor = Color.Red;
-                    if (e.Data != null)
-                        richTextBox1.AppendText(e.Data + "\n");
-                    richTextBox1.ScrollToCaret();
-                }));
-            }
-            catch
-            {
-            }
-        }
-        
-        /// <summary>
-        /// Capture main process stdout output
-        /// and display it on main window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.Data);
-            try
-            {
-                this.Invoke(new MethodInvoker(delegate
-                {
-                    richTextBox1.SelectionColor = Color.LimeGreen;
-                    if (e.Data != null)
-                        richTextBox1.AppendText(e.Data + "\n");
-                    richTextBox1.ScrollToCaret();
-                }));
-            }
-            catch
-            { 
-            }
-        }
+                    process.Kill(); // Kill main process
 
-        /// <summary>
-        /// On form closing...
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (process != null && !process.HasExited)
-            {
-                process.Kill(); // Kill main process
-
-                // OK.. Now check if Erlang leave something behind .. ?!
-                Process[] allProcesses = Process.GetProcesses();
-                foreach (Process p in allProcesses)
-                {
-                    try
+                    // OK.. Now check if Erlang leave something behind .. ?!
+                    Process[] allProcesses = Process.GetProcesses();
+                    foreach (Process p in allProcesses)
                     {
-                        string fullPath = p.MainModule.FileName;
-                        if (fullPath != null && fullPath.StartsWith(erlangDirectory))
+                        try
                         {
-                            System.Diagnostics.Debug.WriteLine("Force to kill : " + fullPath);
-                            p.Kill();
+                            string fullPath = p.MainModule.FileName;
+                            if (fullPath != null && fullPath.StartsWith(erlangDirectory))
+                            {
+                                System.Diagnostics.Debug.WriteLine("Force to kill : " + fullPath);
+                                p.Kill();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
                         }
                     }
-                    catch (Exception ex)
-                    { 
-                    }
                 }
+                process = null;
+
+                startServerToolStripMenuItem.Enabled = true;
+                stopServerToolStripMenuItem.Enabled = false;
+
+                WriteLineToOutput(" Server stoped ... ", Color.White);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error stoping server\n\n" + ex.Message,
+                                this.Text,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Stop);
+                return false;
             }
         }
 
         /// <summary>
-        /// On 'Start console' menu item
+        /// Write line in specified color to output window
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void startConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="data">String to be written</param>
+        /// <param name="c">Color to be used</param>
+        private void WriteLineToOutput(string data, Color c)
         {
-            Process console = new Process();
-            console.StartInfo.UseShellExecute = false;
-            console.StartInfo.FileName = Path.Combine(rmqDirectory, @"sbin\startShell.bat");
-            console.StartInfo.WorkingDirectory = Path.Combine(this.rmqDirectory, "sbin");
-            console.Start();
+            richTextBox1.SelectionColor = c;
+            if (data != null)
+                richTextBox1.AppendText(data + "\n");
+            richTextBox1.ScrollToCaret();
         }
     }
 }

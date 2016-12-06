@@ -36,6 +36,9 @@ namespace SindaSoft.RabbitMqPortable
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.rabbitMQToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -66,15 +69,17 @@ namespace SindaSoft.RabbitMqPortable
             // 
             // tsRabbitMQ
             // 
+            this.tsRabbitMQ.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tsRabbitMQ.Name = "tsRabbitMQ";
-            this.tsRabbitMQ.Size = new System.Drawing.Size(157, 20);
+            this.tsRabbitMQ.Size = new System.Drawing.Size(167, 20);
             this.tsRabbitMQ.Text = "RabbitMQ version: n/a";
             // 
             // tsErlang
             // 
+            this.tsErlang.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tsErlang.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
             this.tsErlang.Name = "tsErlang";
-            this.tsErlang.Size = new System.Drawing.Size(131, 20);
+            this.tsErlang.Size = new System.Drawing.Size(140, 20);
             this.tsErlang.Text = "Erlang version: n/a";
             // 
             // menuStrip1
@@ -91,6 +96,9 @@ namespace SindaSoft.RabbitMqPortable
             // rabbitMQToolStripMenuItem
             // 
             this.rabbitMQToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startServerToolStripMenuItem,
+            this.stopServerToolStripMenuItem,
+            this.toolStripSeparator1,
             this.startConsoleToolStripMenuItem});
             this.rabbitMQToolStripMenuItem.Name = "rabbitMQToolStripMenuItem";
             this.rabbitMQToolStripMenuItem.Size = new System.Drawing.Size(89, 24);
@@ -102,6 +110,25 @@ namespace SindaSoft.RabbitMqPortable
             this.startConsoleToolStripMenuItem.Size = new System.Drawing.Size(166, 24);
             this.startConsoleToolStripMenuItem.Text = "Start Console";
             this.startConsoleToolStripMenuItem.Click += new System.EventHandler(this.startConsoleToolStripMenuItem_Click);
+            // 
+            // startServerToolStripMenuItem
+            // 
+            this.startServerToolStripMenuItem.Name = "startServerToolStripMenuItem";
+            this.startServerToolStripMenuItem.Size = new System.Drawing.Size(166, 24);
+            this.startServerToolStripMenuItem.Text = "Start Server";
+            this.startServerToolStripMenuItem.Click += new System.EventHandler(this.startServerToolStripMenuItem_Click);
+            // 
+            // stopServerToolStripMenuItem
+            // 
+            this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
+            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(166, 24);
+            this.stopServerToolStripMenuItem.Text = "Stop Server";
+            this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(163, 6);
             // 
             // MainWindow
             // 
@@ -135,6 +162,9 @@ namespace SindaSoft.RabbitMqPortable
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem rabbitMQToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startConsoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startServerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopServerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 
     }
 }
