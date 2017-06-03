@@ -16,11 +16,11 @@ If you are not satisifed with version of Erlang and/or RabbitMq server that come
 * Download RabbitMQ zip from this [page](https://www.rabbitmq.com/install-windows-manual.html) and unpack it in RMQP directory.
 * Get [Erlang](https://www.erlang.org/)  directory and copy it to RMQP directory. Unfortunately there are no zip distribution, so you should install it somewhere, get files and unistall it or take it from your friend computer :) . At the end you should see something like this:
 ```
-E:\RabbitMQPortable>dir
+E:\RMQP>dir
  Volume in drive E is SINDA_HD
  Volume Serial Number is 747B-8319
 
- Directory of E:\RabbitMQPortable
+ Directory of E:\RMQP
 
 30.11.2016.  08:56    <DIR>          .
 30.11.2016.  08:56    <DIR>          ..
@@ -30,7 +30,7 @@ E:\RabbitMQPortable>dir
                1 File(s)        761.856 bytes
                4 Dir(s)  276.252.303.360 bytes free
 
-E:\RabbitMQPortable>
+E:\RMQP>
 ```
 
 * Run RabbitMQPortable.exe. If everything is fine it should locate erlang and rabbit and run it
