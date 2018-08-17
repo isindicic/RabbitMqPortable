@@ -2,7 +2,7 @@
 
 Launch [RabbitMQ](https://www.rabbitmq.com/) server for Windows without need to install it from USB.
 
-To successfully compile solution you'll need Visual Studio 2005 or compatible. Solution targets .NET 2.0 and application require such framework version installed in order to run. Also, there are good chance that this was already installed but, in case of problems, just to note that Erlang require Microsoft Visual C++ 2010 Redistributable package installed on target machine.
+To successfully compile solution you'll need Visual Studio 2005 or compatible. Solution targets .NET 2.0 and application require such framework version installed in order to run. Also, there are good chance that this was already installed but, in case of problems, just to note that Erlang require [Microsoft Visual C++ 2013 Redistributable package](https://www.microsoft.com/en-us/download/details.aspx?id=40784) installed on target machine.
 
 ## How to quickly start to use portable RabbitMQ ?
 
