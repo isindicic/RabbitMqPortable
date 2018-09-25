@@ -19,6 +19,7 @@ namespace SindaSoft.RabbitMqPortable
         private string erlangDirectory = null;
         private string ertsDirectory = null;
         private string rmqDirectory = null;
+        private string dataDirectory = null;
         private Process process = null;
 
         /// <summary>
@@ -69,6 +70,10 @@ namespace SindaSoft.RabbitMqPortable
                     rmqDirectory = d; // save it.. 
                     tsRabbitMQ.Text = rp;
                 }
+                else if (rp.ToLower().Equals("data"))
+                {
+                    dataDirectory = d; // Save it.. 
+                }
             }
 
             //********************************************************************
@@ -98,6 +103,24 @@ namespace SindaSoft.RabbitMqPortable
                 return;
             }
 
+
+            if (String.IsNullOrEmpty(dataDirectory))
+            {
+                dataDirectory = Path.Combine(homeDirectory, "data");
+                try
+                {
+                    Directory.CreateDirectory(dataDirectory);
+                }
+                catch
+                {
+                    MessageBox.Show("Cant create '"+dataDirectory+"' directory.",
+                                    this.Text,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Stop);
+                    Close();
+                    return;
+                }
+            }
             //*********************************************************************************
             //  OK.. Now update erl.ini with actual paths
             string iniFile = Path.Combine(erlangDirectory, "bin\\erl.ini");
