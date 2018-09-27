@@ -147,7 +147,9 @@ namespace SindaSoft.RabbitMqPortable
             // Prepare bat file for 'start console' ... 
             string bat_start = "@set ERLANG_HOME=" + erlangDirectory + "\\\n";
             bat_start += "@set RABBITMQ_BASE=" + homeDirectory + "\\data\\\n";
-            bat_start += "@set RABBITMQ_CONFIG_FILE=" + homeDirectory + "\\data\\rabbitmq\n"; 
+            bat_start += "@set RABBITMQ_CONFIG_FILE=" + homeDirectory + "\\data\\rabbitmq\n";
+            bat_start += "@set RABBITMQ_LOG_BASE=" + homeDirectory + "\\data\\log\n";
+
             bat_start += "@set HOMEDRIVE=" + sysHomeDrive + "\n";
             bat_start += "@set HOMEPATH=" + sysHomeDirectory + "\n";
             bat_start += "@cmd.exe";
@@ -269,6 +271,7 @@ namespace SindaSoft.RabbitMqPortable
                 process.StartInfo.EnvironmentVariables["ERLANG_HOME"] = erlangDirectory + @"\"; // Where is erlang ? 
                 process.StartInfo.EnvironmentVariables["RABBITMQ_BASE"] = homeDirectory + @"\data\";  // Where to put RabbitMQ logs and database
                 process.StartInfo.EnvironmentVariables["RABBITMQ_CONFIG_FILE"] = homeDirectory + @"\data\rabbitmq";  // Where is config file
+                process.StartInfo.EnvironmentVariables["RABBITMQ_LOG_BASE"] = homeDirectory + @"\data\log";  // Where are log files
                 process.StartInfo.EnvironmentVariables["HOMEDRIVE"] = sysHomeDrive;     // Erlang need this for cookie file
                 process.StartInfo.EnvironmentVariables["HOMEPATH"] = sysHomeDirectory;  // Erlang need this for cookie file
                 process.StartInfo.UseShellExecute = false;
