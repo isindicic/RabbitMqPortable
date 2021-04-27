@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RabbitMqPortable")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Rabbit MQ Portable")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ivica.sindicic@gmail.com")]
+[assembly: AssemblyCompany("UzEx")]
 [assembly: AssemblyProduct("RabbitMqPortable")]
-[assembly: AssemblyCopyright("Copyright © ivica.sindicic@gmail.com 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.9.0.0")]
-[assembly: AssemblyFileVersion("0.9.0.0")]
+[assembly: AssemblyVersion("1.9.0.0")]
+[assembly: AssemblyFileVersion("1.9.0.0")]

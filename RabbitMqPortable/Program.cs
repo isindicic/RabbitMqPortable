@@ -1,16 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace SindaSoft.RabbitMqPortable
+namespace RabbitMqPortable
 {
-    static class Program
+    internal static class Program
     {
-        /// <summary>
+        /// <summary>WWW
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
